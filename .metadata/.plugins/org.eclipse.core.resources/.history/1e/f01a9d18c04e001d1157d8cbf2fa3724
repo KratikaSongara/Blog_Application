@@ -1,0 +1,16 @@
+package com.masai.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.masai.model.Comments;
+
+@Repository
+public interface CommentsDao extends JpaRepository<Comments, Integer> {
+	@Query("from Comments where postId=?1")
+    public List<Comments> findBypostId(Integer postId);
+//    public Comments findByCommentIdAndPostId(Integer commentId, Integer postId);
+}

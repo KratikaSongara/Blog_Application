@@ -1,0 +1,63 @@
+package com.masai.service;
+
+import com.masai.model.Post;
+import com.masai.repository.PostDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class PostServiceImpl implements PostService{
+
+    @Autowired
+    private PostDao postDao;
+
+//    @Override
+//    public List<PostDTO> getAllPosts() {
+////        return postDao.findAll();
+//        List<Post> list = postDao.findAll();
+//        List<PostDTO> postDTOList = new ArrayList<>();
+//        for(int i=0; i<list.size(); i++)
+//        {
+//            postDTOList.add(new PostDTO());
+//            postDTOList.get(i).setContent(list.get(i).getContent());
+//            postDTOList.get(i).setTitle(list.get(i).getTitle());
+//        }
+//        return postDTOList;
+//    }
+
+    @Override
+    public List<Post> getAllPosts() {
+        return postDao.findAll();
+    }
+
+    @Override
+    public Post getPostById(int postId) {
+        Optional<Post> opt = postDao.findById(postId);
+        return opt.get();
+    }
+
+    @Override
+    public Post createNewPost(Post post) {
+        postDao.save(post);
+        return post;
+    }
+
+    @Override
+    public Post updatePostById(int postId, Post post) {
+        Optional<Post> opt = postDao.findById(postId);
+        if(opt.get() != null)
+        {
+            return postDao.save(post);
+        }
+        return null;
+    }
+
+    @Override
+    public String deletePostById(int postId) {
+        postDao.deleteById(postId);
+        return "post successfully deleted";
+    }
+}

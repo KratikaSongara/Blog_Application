@@ -1,0 +1,15 @@
+package com.masai.service;
+
+import java.util.List;
+
+import com.masai.model.Post;
+import com.masai.model.PostDTO;
+
+public interface PostService {
+    public List<PostDTO> getAllPosts();
+//    public List<Post> getAllPosts();
+    public Post getPostById(int postId);
+    public Post createNewPost(Post post);
+    public Post updatePostById(int postId, Post post);
+    public String deletePostById(int postId);
+}

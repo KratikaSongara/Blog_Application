@@ -1,0 +1,42 @@
+package com.masai.controller;
+
+import com.masai.model.Comments;
+import com.masai.service.CommentsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/posts")
+public class CommentsController {
+    @Autowired
+    private CommentsService commentsService;
+
+    @GetMapping("/{postId}/comments")
+    public ResponseEntity<List<Comments>> getCommentsByPostId(@PathVariable("postId") Integer postId) {
+        return new ResponseEntity<>(commentsService.getCommentsByPostId(postId), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/{postId}/comments/{commentId}")
+    public ResponseEntity<Comments> getCommentByIdAndPostId(@PathVariable("commentId") Integer commentId, @PathVariable("postId") Integer postId) {
+        return new ResponseEntity<>(commentsService.getCommentByIdAndPostId(commentId,postId), HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/{postId}/comments")
+    public ResponseEntity<Comments> createNewCommentForPost(@PathVariable("postId") Integer postId, @RequestBody Comments comment) {
+        return new ResponseEntity<>(commentsService.createNewCommentForPost(postId,comment), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{postId}/comments/{commentId}")
+    public ResponseEntity<String> deleteByPostIdAndCommentId(@PathVariable("postId") Integer postId, @PathVariable("commentId") Integer commentId) {
+        return new ResponseEntity<>(commentsService.deleteCommentByIdAndPostId(commentId,postId), HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping("/{postId}/comments/{commentId}")
+    public ResponseEntity<Comments> updateCommentByIdAndPostId(@PathVariable("commentId") Integer commentId, @PathVariable("postId") Integer postId, @RequestBody Comments comments) {
+        return new ResponseEntity<>(commentsService.updateCommentByIdAndPostId(commentId,postId,comments),HttpStatus.ACCEPTED);
+    }
+}
