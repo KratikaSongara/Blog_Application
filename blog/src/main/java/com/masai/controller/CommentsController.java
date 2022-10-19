@@ -2,6 +2,8 @@ package com.masai.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +37,7 @@ public class CommentsController {
     }
 
     @PostMapping("/{postId}/comments")
-    public ResponseEntity<CommentDTO> createNewCommentForPost(@PathVariable("postId") Integer postId, @RequestBody Comments comment) {
+    public ResponseEntity<CommentDTO> createNewCommentForPost(@Valid @PathVariable("postId") Integer postId, @RequestBody Comments comment) {
         return new ResponseEntity<>(commentsService.createNewCommentForPost(postId,comment), HttpStatus.CREATED);
     }
 
@@ -45,7 +47,7 @@ public class CommentsController {
     }
 
     @PutMapping("/{postId}/comments/{commentId}")
-    public ResponseEntity<CommentDTO> updateCommentByIdAndPostId(@PathVariable("commentId") Integer commentId, @PathVariable("postId") Integer postId, @RequestBody Comments comments) {
+    public ResponseEntity<CommentDTO> updateCommentByIdAndPostId(@Valid @PathVariable("commentId") Integer commentId, @PathVariable("postId") Integer postId, @RequestBody Comments comments) {
         return new ResponseEntity<>(commentsService.updateCommentByIdAndPostId(commentId,postId,comments),HttpStatus.ACCEPTED);
     }
 }

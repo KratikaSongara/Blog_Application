@@ -2,6 +2,8 @@ package com.masai.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,13 +38,13 @@ public class PostController {
     }
 
     @PostMapping("/posts")
-    public ResponseEntity<PostDTO> createPost(@RequestBody Post post) {
+    public ResponseEntity<PostDTO> createPost(@Valid @RequestBody Post post) {
         return new ResponseEntity<>(postService.createNewPost(post), HttpStatus.ACCEPTED);
     }
 
     @PutMapping("/posts/{postId}")
-    public ResponseEntity<String> updatePost(@PathVariable("postId") int postId, @RequestBody Post post) {
-        PostDTO post2 = postService.updatePostById(postId, post);
+    public ResponseEntity<String> updatePost(@Valid @PathVariable("postId") int postId, @RequestBody PostDTO postdto) {
+        PostDTO post2 = postService.updatePostById(postId, postdto);
         if(post2 == null)
         {
             return new ResponseEntity<>("post not found", HttpStatus.NO_CONTENT);

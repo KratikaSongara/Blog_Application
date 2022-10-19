@@ -9,6 +9,6 @@ public interface PostService {
     public List<PostDTO> getAllPosts();
     public PostDTO getPostById(int postId);
     public PostDTO createNewPost(Post post);
-    public PostDTO updatePostById(int postId, Post post);
+    public PostDTO updatePostById(int postId, PostDTO postdto);
     public String deletePostById(int postId);
 }
