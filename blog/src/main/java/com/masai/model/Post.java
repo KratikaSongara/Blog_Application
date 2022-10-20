@@ -15,6 +15,8 @@ import javax.validation.constraints.Size;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,6 +41,7 @@ public class Post {
     @NotNull(message="message is mandatory")
     @Email
     private String email;
+    @JsonIgnore
     @OneToMany(mappedBy="post", cascade=CascadeType.ALL) //if i do not use mappedBy then while deleting a comment we will face some 
 //    @CascadeOnDelete
     //problem becoz as we will not be using mappedby means a separate table will get created and in that table

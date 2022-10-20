@@ -1,12 +1,14 @@
 package com.masai.service;
 
+import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.masai.exception.PostNotFoundException;
@@ -60,11 +62,6 @@ public class PostServiceImpl implements PostService{
         Optional<Post> opt = postDao.findById(postId);
         if(opt.get() != null)
         {
-//        	post.setPostId(postId);
-//        	post.setList(opt.get().getList());
-//            postDao.save(post);
-//            PostDTO post2 = new PostDTO(post.getContent(),post.getTitle());
-//            return post2;
         	opt.get().setContent(postdto.getContent());
         	opt.get().setTitle(postdto.getTitle());
         	postDao.save(opt.get());
@@ -72,16 +69,48 @@ public class PostServiceImpl implements PostService{
         }
         throw new PostNotFoundException("post with this id not found");
     }
-
-//    @Transactional
+    
     @Override
     public String deletePostById(int postId) {
     	Optional<Post> opt = postDao.findById(postId);
         if(!opt.isPresent()) {
         	throw new PostNotFoundException("post with this id not found");
         }
-//        commentsDao.deleteCommentsByPostId(postId);
         postDao.deleteById(postId);
         return "post successfully deleted";
     }
+
+    /////////////// P A G I N A T I O N /////////////////////////
+    @Override
+	public Page<Post> pagination(int pageno, int pagesize) {
+    	List<PostDTO> postdto = new ArrayList<>();
+		PageRequest pr = PageRequest.of(pageno, pagesize);
+		Page<Post> allPosts = postDao.findAll(pr);
+		for(Post p : allPosts.getContent()) {
+			PostDTO pdto = new PostDTO();
+			pdto.setContent(p.getContent());
+			pdto.setTitle(p.getTitle());
+		}
+		System.out.println("LIST IS"+" "+postdto);
+		return allPosts;
+	}
+
+    /////////////// S O R T I N G  /////////////////////////
+	@Override
+	public List<Post> sorting(String option) {
+		List<Post> sort = postDao.findAll(Sort.by(option));
+		return sort;
+	}
+
+	
+    //////////////// P A G I N A T I O N AND S O R T I N G/////////////////////
+	@Override
+	public Page<Post> paginationAndSorting(int pageno, int pagesize, String option) {
+		PageRequest pr = PageRequest.of(pageno, pagesize, Sort.by(option));
+		Page<Post> allPosts = postDao.findAll(pr);
+		return allPosts;
+	}
+
+	
+	
 }

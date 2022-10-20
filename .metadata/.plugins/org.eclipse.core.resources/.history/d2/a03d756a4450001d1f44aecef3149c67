@@ -1,0 +1,16 @@
+package com.masai.service;
+
+import java.awt.print.Pageable;
+import java.util.List;
+
+import com.masai.model.Post;
+import com.masai.model.PostDTO;
+
+public interface PostService {
+    public List<PostDTO> getAllPosts();
+    public PostDTO getPostById(int postId);
+    public PostDTO createNewPost(Post post);
+    public PostDTO updatePostById(int postId, PostDTO postdto);
+    public String deletePostById(int postId);
+    public Pageable pagination(int pageno, int pagesize);
+}

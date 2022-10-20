@@ -5,6 +5,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -56,6 +58,21 @@ public class PostController {
     public ResponseEntity<String> deletePostById(@PathVariable("postId") int postId) {
         postService.deletePostById(postId);
         return new ResponseEntity<String>("post deleted successfully", HttpStatus.ACCEPTED);
+    }
+    
+    @GetMapping("/posts/{pageno}/{pagesize}")
+    public Page<Post> pagination(@PathVariable("pageno") Integer pageno, @PathVariable("pagesize") Integer pagesize) {
+    	return postService.pagination(pageno, pagesize);
+    }
+    
+    @GetMapping("posts/sort/{option}")
+    public List<Post> sorting(@PathVariable("option") String option) {
+    	return postService.sorting(option);
+    }
+    
+    @GetMapping("posts/{pageno}/{pagesize}/{option}")
+    public Page<Post> paginationAndSorting(@PathVariable("pageno") Integer pageno, @PathVariable("pagesize") Integer pagesize, @PathVariable("option") String option) {
+    	return postService.paginationAndSorting(pageno, pagesize, option);
     }
 
 }
